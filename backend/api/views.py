@@ -9,6 +9,9 @@ from .models import Document
 from .serializers import DocumentSerializer
 import os
 
+from .rag_engine.pipeline import process_document
+
+
 # You’ll integrate RAG here later
 class DocumentUploadView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -21,15 +24,20 @@ class DocumentUploadView(APIView):
         doc = Document.objects.create(
             title=file.name,
             file=file,
-            doc_type=os.path.splitext(file.name)[1][1:],
+            doc_type=os.path.splitext(file.name)[1][1:].lower(),
             size=file.size,
             processing_status='Processing'
         )
-        doc.save()
-
+        
+        doc_path = doc.file.path
         # TODO: Call document processing pipeline here (parser → chunk → embed)
+        try:
+            chunk_count = process_document(doc_path, doc.doc_type, str(doc.id))
+            doc.processing_status = f"Completed ({chunk_count} chunks)"
+        except Exception as e:
+            doc.processing_status = f"Error: {str(e)}"
 
-        doc.processing_status = 'Completed'
+        # doc.processing_status = 'Completed'
         doc.save()
 
         return Response(DocumentSerializer(doc).data, status=201)
@@ -78,3 +86,7 @@ class AskQuestionView(APIView):
             "answer": f"Mock answer for question: '{question}' on document ID {document_id}",
             "sources": []
         }, status=200)
+
+def post(self, request, *args, **kwargs):
+    print("Received request data:", request.data)  # Check the incoming data
+    return super().post(request, *args, **kwargs)
