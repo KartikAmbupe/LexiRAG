@@ -15,14 +15,29 @@ def process_document(doc_path, file_type, doc_id):
     return len(chunks)
 
 def answer_question(doc_id, question, top_k=5):
-    question_embedding = model.encode([question], convert_to_tensor=True).tolist()[0]
-    results = search_similar_chunks(question_embedding, top_k)
-    
-    relevant_chunks = [doc for doc in results['documents'][0]]
-    context = "\n".join(relevant_chunks)
-    answer = generate_answer(question, context)
-    
-    return {
-        "answer": answer,
-        "sources": relevant_chunks
-    }
+    try:
+        question_embedding = model.encode([question], convert_to_tensor=True).tolist()[0]
+
+        results = search_similar_chunks(question_embedding, top_k)
+
+        if not results['documents'] or not results['documents'][0]:
+            return {
+                "answer": "Sorry, I couldn't find any relevant information in the document.",
+                "sources": []
+            }
+
+        relevant_chunks = results['documents'][0]
+        context = "\n".join(relevant_chunks)
+
+        answer = generate_answer(question, context)
+
+        return {
+            "answer": answer,
+            "sources": relevant_chunks
+        }
+    except Exception as e:
+        return {
+            "answer": f"RAG pipeline failed: {str(e)}",
+            "sources": []
+        }
+

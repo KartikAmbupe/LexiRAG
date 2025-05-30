@@ -5,14 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status
-from .models import Document
 from .serializers import DocumentSerializer
 import os
 
 from .rag_engine.pipeline import process_document
+from .models import Document, ChatSession, ChatMessage
+from .rag_engine.pipeline import answer_question 
 
 
-# You’ll integrate RAG here later
 class DocumentUploadView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
@@ -42,19 +42,6 @@ class DocumentUploadView(APIView):
 
         return Response(DocumentSerializer(doc).data, status=201)
 
-# class TestUploadView(APIView):
-#     parser_classes = [MultiPartParser, FormParser]
-
-#     def post(self, request, *args, **kwargs):
-#         print("FILES:", request.FILES)
-#         print("DATA:", request.data)
-#         print("CONTENT-TYPE:", request.content_type)
-
-#         file = request.FILES.get('file')
-#         if file:
-#             return Response({"file_name": file.name}, status=200)
-#         return Response({"error": "No file received"}, status=400)
-
 class DocumentListView(APIView):
     def get(self, request):
         documents = Document.objects.all()
@@ -78,14 +65,52 @@ class DocumentDetailView(APIView):
 
 class AskQuestionView(APIView):
     def post(self, request):
+        print("RAW DATA:", request.body)
+        print("PARSED DATA:", request.data)
+
         document_id = request.data.get('document_id')
         question = request.data.get('question')
+        session_id = request.data.get('chat_session_id')  # Optional
 
-        # Placeholder response – to be replaced with RAG logic
-        return Response({
-            "answer": f"Mock answer for question: '{question}' on document ID {document_id}",
-            "sources": []
-        }, status=200)
+        if not document_id or not question:
+            return Response({"error": "Missing document_id or question"}, status=400)
+
+        # Validate document
+        try:
+            document = Document.objects.get(id=document_id)
+        except Document.DoesNotExist:
+            return Response({"error": "Document not found"}, status=404)
+
+        try:
+            # Create or reuse chat session
+            if session_id:
+                session = ChatSession.objects.get(id=session_id)
+            else:
+                session = ChatSession.objects.create(document=document)
+
+            # Run the actual RAG pipeline
+            result = answer_question(document_id, question)
+            answer = result["answer"]
+            sources = result["sources"]
+
+            # Save the chat message
+            message = ChatMessage.objects.create(
+                session=session,  # Ensure session is assigned
+                question=question,
+                answer=answer,
+                sources="\n\n".join(sources)
+            )
+
+            return Response({
+                "answer": answer,
+                "sources": sources,
+                "chat_message_id": message.id,
+                "chat_session_id": session.id  # Return session ID
+            }, status=200)
+
+        except Exception as e:
+            return Response({"error": f"RAG processing failed: {str(e)}"}, status=500)
+
 
 def post(self, request, *args, **kwargs):
     print("Received request data:", request.data)  # Check the incoming data

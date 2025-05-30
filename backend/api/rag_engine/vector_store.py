@@ -1,7 +1,7 @@
 import chromadb
-from chromadb.config import Settings
 
-client = chromadb.Client(Settings(chroma_db_impl="duckdb+parquet", persist_directory="chroma_store"))
+client = chromadb.PersistentClient(path="chroma_store")
+
 collection = client.get_or_create_collection("documents")
 
 def store_vectors(doc_id, chunks, embeddings):
