@@ -130,11 +130,17 @@ lexirag/
 
 ## 📸 Screenshots
 
-> _Add screenshots of:_
 > - Landing Page  
-> - Upload Page  
-> - Document Library  
+![Home page](https://github.com/user-attachments/assets/abc26d0a-3367-4d71-aaad-abbd5984c166)
+
+> - Upload Page
+![Upload Page](https://github.com/user-attachments/assets/3356fe5a-4add-4707-b2fb-897fcfab8789)
+
+> - Document Library
+![Library Page](https://github.com/user-attachments/assets/8aa83ff8-1ff0-49f8-bc4f-c41c9a9d6c2a)
+
 > - Chat Interface  
+![Chatbot](https://github.com/user-attachments/assets/73318636-96f2-441b-af89-759ee08fbb26)
 
 ---
 
