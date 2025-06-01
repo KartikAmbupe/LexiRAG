@@ -18,7 +18,7 @@ def answer_question(doc_id, question, top_k=5):
     try:
         question_embedding = model.encode([question], convert_to_tensor=True).tolist()[0]
 
-        results = search_similar_chunks(question_embedding, top_k)
+        results = search_similar_chunks(question_embedding, top_k=top_k, doc_id=doc_id)
 
         if not results['documents'] or not results['documents'][0]:
             return {
@@ -26,18 +26,34 @@ def answer_question(doc_id, question, top_k=5):
                 "sources": []
             }
 
-        relevant_chunks = results['documents'][0]
+        relevant_chunks = [doc for doc in results['documents'][0]]
         context = "\n".join(relevant_chunks)
+        prompt = f"Context:\n{context}\n\nQuestion: {question}\nAnswer:"
+        
+        prompt = f"""
+                    You are a helpful AI assistant. Based on the context below, answer the user's question concisely and clearly.
 
-        answer = generate_answer(question, context)
+                    Only use information from the context. Do not repeat the context verbatim unless asked.
+
+                    Context:
+                    \"\"\"
+                    {context}
+                    \"\"\"
+
+                    Question: {question}
+                    Answer:
+                    """
+
+
+        answer = generate_answer(question, prompt)
 
         return {
             "answer": answer,
             "sources": relevant_chunks
         }
+
     except Exception as e:
         return {
             "answer": f"RAG pipeline failed: {str(e)}",
             "sources": []
         }
-

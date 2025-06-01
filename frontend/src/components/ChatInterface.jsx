@@ -1,5 +1,5 @@
-// src/components/ChatInterface.jsx
 import React, { useRef, useEffect } from 'react';
+import { Bot, User } from 'lucide-react';
 
 const ChatInterface = ({ messages, loading, question, setQuestion, handleAsk }) => {
   const chatEndRef = useRef(null);
@@ -10,17 +10,33 @@ const ChatInterface = ({ messages, loading, question, setQuestion, handleAsk }) 
 
   return (
     <>
-      <div className="flex-1 overflow-y-auto bg-white rounded shadow p-4 space-y-4 mb-4 max-h-[70vh]">
+      <div className="flex-1 overflow-y-auto bg-[#1F2937] rounded-2xl shadow p-6 space-y-4 mb-4 max-h-[70vh]">
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`rounded-lg px-4 py-2 max-w-sm whitespace-pre-wrap text-sm ${
-              msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
-            }`}>
-              {msg.content}
-              {msg.sources && msg.sources.length > 0 && (
-                <ul className="mt-2 text-xs text-gray-600 list-disc pl-5">
-                  {msg.sources.map((src, i) => <li key={i}>{src}</li>)}
-                </ul>
+            <div className="flex items-start gap-2 max-w-sm">
+              {msg.role === 'ai' && (
+                <div className="text-purple-400 mt-1">
+                  <Bot className="w-5 h-5" />
+                </div>
+              )}
+              <div
+                className={`rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap shadow ${
+                  msg.role === 'user'
+                    ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white'
+                    : 'bg-[#2D3748] text-white border border-gray-700'
+                }`}
+              >
+                {msg.content}
+                {/* {msg.sources && msg.sources.length > 0 && (
+                  <ul className="mt-2 text-xs text-purple-300 list-disc pl-5">
+                    {msg.sources.map((src, i) => <li key={i}>{src}</li>)}
+                  </ul>
+                )} */}
+              </div>
+              {msg.role === 'user' && (
+                <div className="text-gray-300 mt-1">
+                  <User className="w-5 h-5" />
+                </div>
               )}
             </div>
           </div>
@@ -28,10 +44,10 @@ const ChatInterface = ({ messages, loading, question, setQuestion, handleAsk }) 
         <div ref={chatEndRef} />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center mt-2">
         <input
           type="text"
-          className="flex-1 border px-4 py-2 rounded"
+          className="flex-1 bg-[#1E293B] text-white border border-gray-600 px-4 py-3 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm placeholder-gray-400"
           placeholder="Ask something about the document..."
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
@@ -40,7 +56,14 @@ const ChatInterface = ({ messages, loading, question, setQuestion, handleAsk }) 
         <button
           onClick={handleAsk}
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="
+            px-6 py-3 rounded-full
+            bg-gradient-to-r from-purple-600 via-pink-600 to-red-600
+            text-white font-semibold shadow-md
+            hover:from-purple-700 hover:via-pink-700 hover:to-red-700
+            focus:outline-none focus:ring-4 focus:ring-purple-500/60
+            transition-all duration-300
+          "
         >
           {loading ? 'Asking...' : 'Ask'}
         </button>
