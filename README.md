@@ -157,4 +157,3 @@ This project is intended for academic and demonstration purposes. For production
 
 **Kartik Ambupe**  
 📍 Mumbai / Kolhapur  
-🎓 Somaiya Vidyavihar University  
