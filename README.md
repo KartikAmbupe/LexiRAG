@@ -136,6 +136,9 @@ lexirag/
 > - Upload Page
 ![Upload Page](https://github.com/user-attachments/assets/3356fe5a-4add-4707-b2fb-897fcfab8789)
 
+> - Successful Document upload
+![Screenshot 2025-06-02 002539](https://github.com/user-attachments/assets/192ca528-d303-4a6d-914f-61985a1f5108)
+ 
 > - Document Library
 ![Library Page](https://github.com/user-attachments/assets/8aa83ff8-1ff0-49f8-bc4f-c41c9a9d6c2a)
 
