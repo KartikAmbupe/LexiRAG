@@ -147,13 +147,6 @@ lexirag/
 
 ---
 
-## 📜 License
-
-This project is intended for academic and demonstration purposes. For production use or licensing, contact the author.
+## Made with ❤️ by Kartik
 
 ---
-
-## 🙋‍♂️ Author
-
-**Kartik Ambupe**  
-📍 Mumbai / Kolhapur  
