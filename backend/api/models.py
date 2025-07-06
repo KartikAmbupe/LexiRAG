@@ -4,9 +4,10 @@ from django.db import models
 from django.db import models
 
 class Document(models.Model):
+    user_id = models.CharField(max_length=255) # clerk user ID
     title = models.CharField(max_length=255)
     file = models.FileField(upload_to='documents/')
-    doc_type = models.CharField(max_length=10)  # pdf, docx, txt
+    doc_type = models.CharField(max_length=10)
     size = models.PositiveIntegerField()
     pages = models.PositiveIntegerField(null=True, blank=True)
     upload_date = models.DateTimeField(auto_now_add=True)
@@ -21,11 +22,12 @@ class DocumentChunk(models.Model):
 
 class ChatSession(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    user_id = models.CharField(max_length=255) # clerk user ID
     created_at = models.DateTimeField(auto_now_add=True)
 
 class ChatMessage(models.Model):
     session = models.ForeignKey(ChatSession, on_delete=models.CASCADE)
-    question = models.TextField()
-    answer = models.TextField()
-    sources = models.TextField()  # Could be a list or chunk IDs
-    timestamp = models.DateTimeField(auto_now_add=True)
+    is_user = models.BooleanField(default=True) # false = AI response
+    content = models.TextField() 
+    sources = models.TextField() # only for bot messages
+    created_at = models.DateTimeField(auto_now_add=True)

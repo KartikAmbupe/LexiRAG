@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
+import { useUser } from "@clerk/clerk-react";
 
 const UploadForm = () => {
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState('');
   const [status, setStatus] = useState('');
   const [documentId, setDocumentId] = useState(null);
-
+  const {user} = useUser();
+  
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -22,6 +24,7 @@ const UploadForm = () => {
       const res = await axios.post('http://127.0.0.1:8000/api/documents/upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          "X-User-Id": user?.id,
         },
         validateStatus: (status) => status >= 200 && status < 300,
       });

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DocumentCard from '../components/DocumentCard';
+import { useUser } from "@clerk/clerk-react";
 
 const LibraryPage = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/documents/')
+    if(!user) return;
+    axios.get('http://127.0.0.1:8000/api/documents/', {
+      headers: {
+        "X-User-Id": user.id,
+      },
+    })
       .then(res => {
         setDocuments(res.data);
         setLoading(false);
@@ -16,7 +23,7 @@ const LibraryPage = () => {
         console.error("Failed to load documents:", err);
         setLoading(false);
       });
-  }, []);
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-900 p-8">

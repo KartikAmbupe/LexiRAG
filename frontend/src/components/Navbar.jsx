@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { UserButton, SignedIn } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const location = useLocation();
@@ -29,10 +30,14 @@ const Navbar = () => {
         >
           🧠 LexiRAG
         </Link>
-        <div className="flex gap-3">
+
+        <div className="flex items-center gap-4">
           {navLink("/", "Home")}
           {navLink("/upload", "Upload")}
           {navLink("/library", "Library")}
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
         </div>
       </div>
     </nav>
