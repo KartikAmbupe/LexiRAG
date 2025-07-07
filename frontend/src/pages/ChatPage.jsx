@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ChatInterface from '../components/ChatInterface';
 import { useUser } from '@clerk/clerk-react'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const ChatPage = () => {
   const { id } = useParams(); // document id from url
@@ -23,12 +24,12 @@ const ChatPage = () => {
         };
 
       // Fetch Documetn metadata
-      const docRes = await axios.get(`https://lexirag.onrender.com/api/documents/${id}/`, {headers});
+      const docRes = await axios.get(`${BACKEND_URL}/api/documents/${id}/`, {headers});
       setDocumentName(docRes.data.title);
       setDocumentUploadDate(docRes.data.upload_date);
 
       // Fetch chat history
-      const chatRes = await axios.get(`https://lexirag.onrender.com/api/chat-history/${id}/`, {headers});
+      const chatRes = await axios.get(`${BACKEND_URL}/api/chat-history/${id}/`, {headers});
 
       // set existing message
       const restoredMessages = chatRes.data.messages.map(msg => ({
@@ -59,7 +60,7 @@ const ChatPage = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://lexirag.onrender.com/api/query/', {
+      const res = await axios.post(`${BACKEND_URL}/api/query/`, {
         document_id: parseInt(id),
         question: userMessage.content,
         chat_session_id: chatSessionId,
@@ -108,8 +109,10 @@ const ChatPage = () => {
         <button
         onClick={async () => {
           try {
-            await axios.delete(`https://lexirag.onrender.com/api/chat-history/${id}/clear/`, {
-              headers: { "X-User-Id": user.id },
+            await axios.delete(`${BACKEND_URL}/api/chat-history/${id}/clear/`, {
+              headers: { 
+                "X-User-Id": user.id 
+              },
             });
             setMessages([]);
             setChatSessionId(null);

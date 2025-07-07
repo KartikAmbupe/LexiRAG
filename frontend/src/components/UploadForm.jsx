@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { useUser } from "@clerk/clerk-react";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const UploadForm = () => {
   const fileInputRef = useRef(null);
@@ -21,9 +22,9 @@ const UploadForm = () => {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('https://lexirag.onrender.com/api/documents/upload/', formData, {
+      const res = await axios.post(`${BACKEND_URL}/api/documents/upload/`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
           "X-User-Id": user?.id,
         },
         validateStatus: (status) => status >= 200 && status < 300,

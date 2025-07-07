@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import DocumentCard from '../components/DocumentCard';
 import { useUser } from "@clerk/clerk-react";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const LibraryPage = () => {
   const [documents, setDocuments] = useState([]);
@@ -10,7 +11,7 @@ const LibraryPage = () => {
 
   useEffect(() => {
     if(!user) return;
-    axios.get('https://lexirag.onrender.com/api/documents/', {
+    axios.get(`${BACKEND_URL}/api/documents/`, {
       headers: {
         "X-User-Id": user.id,
       },
