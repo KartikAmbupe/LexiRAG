@@ -20,9 +20,11 @@ class DocumentUploadView(APIView):
     def post(self, request, *args, **kwargs):
         print("Received file:", request.FILES.get("file"))
         print("Received user ID:", request.headers.get("X-User-Id"))
+        
         user_id = request.headers.get("X-User-Id")
         if not user_id:
             return Response({"error": "Missing user ID"}, status=400)
+        
         file = request.FILES.get('file')
         if not file:
             return Response({"error": "No file uploaded"}, status=400)
@@ -37,6 +39,7 @@ class DocumentUploadView(APIView):
         )
         
         doc_path = doc.file.path
+        
         try:
             chunk_count = process_document(doc_path, doc.doc_type, str(doc.id))
             doc.processing_status = f"Completed ({chunk_count} chunks)"

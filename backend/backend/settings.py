@@ -64,6 +64,7 @@ CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-User-Id",
+    "Content-Type"
 ]
 
 ROOT_URLCONF = 'backend.urls'
