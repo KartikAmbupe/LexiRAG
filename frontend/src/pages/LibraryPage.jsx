@@ -10,7 +10,7 @@ const LibraryPage = () => {
 
   useEffect(() => {
     if(!user) return;
-    axios.get('http://127.0.0.1:8000/api/documents/', {
+    axios.get('https://lexirag-backend.onrender.com/api/documents/', {
       headers: {
         "X-User-Id": user.id,
       },
