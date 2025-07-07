@@ -23,12 +23,12 @@ const ChatPage = () => {
         };
 
       // Fetch Documetn metadata
-      const docRes = await axios.get(`https://lexirag-backend.onrender.com/api/documents/${id}/`, {headers});
+      const docRes = await axios.get(`https://lexirag.onrender.com/api/documents/${id}/`, {headers});
       setDocumentName(docRes.data.title);
       setDocumentUploadDate(docRes.data.upload_date);
 
       // Fetch chat history
-      const chatRes = await axios.get(`https://lexirag-backend.onrender.com/api/chat-history/${id}/`, {headers});
+      const chatRes = await axios.get(`https://lexirag.onrender.com/api/chat-history/${id}/`, {headers});
 
       // set existing message
       const restoredMessages = chatRes.data.messages.map(msg => ({
@@ -59,7 +59,7 @@ const ChatPage = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('https://lexirag-backend.onrender.com/api/query/', {
+      const res = await axios.post('https://lexirag.onrender.com/api/query/', {
         document_id: parseInt(id),
         question: userMessage.content,
         chat_session_id: chatSessionId,
@@ -108,7 +108,7 @@ const ChatPage = () => {
         <button
         onClick={async () => {
           try {
-            await axios.delete(`https://lexirag-backend.onrender.com/api/chat-history/${id}/clear/`, {
+            await axios.delete(`https://lexirag.onrender.com/api/chat-history/${id}/clear/`, {
               headers: { "X-User-Id": user.id },
             });
             setMessages([]);

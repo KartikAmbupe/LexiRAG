@@ -21,7 +21,7 @@ const UploadForm = () => {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('https://lexirag-backend.onrender.com/api/documents/upload/', formData, {
+      const res = await axios.post('https://lexirag.onrender.com/api/documents/upload/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           "X-User-Id": user?.id,
