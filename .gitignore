@@ -8,3 +8,4 @@ media/
 .pdf
 .txt
 test/
+staticfiles/
