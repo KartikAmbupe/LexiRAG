@@ -24,10 +24,11 @@ const UploadForm = () => {
     try {
       const res = await axios.post(`${BACKEND_URL}/api/documents/upload/`, formData, {
         headers: {
-          // 'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
           "X-User-Id": user?.id,
         },
         validateStatus: (status) => status >= 200 && status < 300,
+        timeout: 20000,
       });
 
       if (res.status === 201) {
@@ -47,7 +48,7 @@ const UploadForm = () => {
       <h1 className="text-3xl font-extrabold mb-6 text-center">📎 Upload a Document</h1>
 
       <p className="text-center text-gray-400 mb-6 max-w-sm mx-auto">
-        Select a PDF, DOCX, or TXT file to upload. Once uploaded, you can chat with your document using LexiRAG’s intelligent retrieval system.
+        Select a PDF, DOCX, or TXT file to upload. <br/> Once uploaded, you can chat with your document using LexiRAG’s intelligent retrieval system.
       </p>
 
       <div className="flex justify-center mb-6">

@@ -60,7 +60,10 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",")
+CORS_ALLOWED_ORIGINS = [
+    'https://lexi-rag.vercel.app',
+    'http://localhost:5173'
+]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "X-User-Id",
