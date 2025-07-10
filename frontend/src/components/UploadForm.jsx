@@ -24,7 +24,7 @@ const UploadForm = () => {
     try {
       const res = await axios.post(`${BACKEND_URL}/api/documents/upload/`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          // 'Content-Type': 'multipart/form-data',
           "X-User-Id": user?.id,
         },
         validateStatus: (status) => status >= 200 && status < 300,
@@ -39,7 +39,7 @@ const UploadForm = () => {
       }
     } catch (error) {
       console.error("Upload error:", error.message);
-      setStatus('Upload failed. See console for details.');
+      setStatus('Upload failed.');
     }
   };
 
