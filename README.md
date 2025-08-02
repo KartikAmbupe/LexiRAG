@@ -88,36 +88,6 @@ Content-Type: application/json
 
 ---
 
-## 📂 Project Structure
-
-```
-lexirag/
-├── backend/
-│   ├── api/
-│   │   ├── views.py, models.py, urls.py
-│   │   └── rag/
-│   │       ├── parser.py
-│   │       ├── chunker.py
-│   │       ├── embedder.py
-│   │       ├── vector_store.py
-│   │       └── generator.py
-│   └── media/
-│
-└── frontend/
-    ├── src/
-    │   ├── pages/
-    │   │   ├── LandingPage.jsx
-    │   │   ├── UploadPage.jsx
-    │   │   ├── LibraryPage.jsx
-    │   │   └── ChatPage.jsx
-    │   └── components/
-    │       ├── Navbar.jsx
-    │       └── DocumentCard.jsx
-    └── index.html, tailwind.config.js
-```
-
----
-
 ## 🧠 RAG Pipeline
 
 1. Document is parsed → chunked → embedded.
