@@ -8,9 +8,9 @@ load_dotenv()
 # Retrieve API key
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 
-def generate_answer(question, context):
+def generate_answer(prompt):
     try:
-        prompt = f"Answer the question based on the following context:\n\n{context}\n\nQuestion: {question}"
+        # prompt = f"Answer the question based on the following context:\n\n{context}\n\nQuestion: {question}"
         
         headers = {
             "Authorization": f"Bearer {API_KEY}",

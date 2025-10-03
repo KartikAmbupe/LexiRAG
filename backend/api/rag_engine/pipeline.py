@@ -1,11 +1,11 @@
 from .parser import extract_text
 from .chunker import chunk_text
-from .embedder import generate_embeddings
+from .embedder import generate_embeddings, MODEL as embedding_model
 from .vector_store import store_vectors, search_similar_chunks
 from .generator import generate_answer
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer('all-MiniLM-L6-v2')
+# model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def process_document(doc_path, file_type, doc_id):
     text = extract_text(doc_path, file_type)
@@ -16,7 +16,7 @@ def process_document(doc_path, file_type, doc_id):
 
 def answer_question(doc_id, question, top_k=5):
     try:
-        question_embedding = model.encode([question], convert_to_tensor=True).tolist()[0]
+        question_embedding = embedding_model.encode([question], convert_to_tensor=True).tolist()[0]
 
         results = search_similar_chunks(question_embedding, top_k=top_k, doc_id=doc_id)
 
@@ -45,7 +45,7 @@ def answer_question(doc_id, question, top_k=5):
                     """
 
 
-        answer = generate_answer(question, prompt)
+        answer = generate_answer(prompt)
 
         return {
             "answer": answer,

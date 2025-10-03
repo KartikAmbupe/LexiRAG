@@ -1,6 +1,16 @@
 from sentence_transformers import SentenceTransformer
+import logging
 
-model = SentenceTransformer('all-MiniLM-L6-v2')  # lightweight and fast pre-trained model with good accuracy
+logger = logging.getLogger(__name__)
+MODEL = None # Global variable to hold the model
+
+def initialize_model():
+    global MODEL
+    if MODEL is None:
+        logger.info("Loading SentenceTransformer model...")
+        MODEL = SentenceTransformer('all-MiniLM-L6-v2')
+        logger.info("Model loaded successfully.")
 
 def generate_embeddings(chunks):
-    return model.encode(chunks, convert_to_tensor=True).tolist()
+    if MODEL is None: initialize_model() # Fallback for safety
+    return MODEL.encode(chunks, show_progress_bar=False).tolist()
